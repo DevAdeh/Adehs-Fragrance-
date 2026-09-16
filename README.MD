@@ -8,7 +8,7 @@ A responsive e-commerce landing page for a fragrance store, offering designer pe
 ## Links
 Github: [https://github.com/DevAdeh/Adehs-Fragrance-.git]
 
-Live: []
+Live: [https://adehs-fragrance.vercel.app/]
 
 ## Overview
 
