@@ -1,4 +1,33 @@
-// 1. Product data - array of objects
+// Cart lives in localStorage so it survives page navigation
+function getCart() {
+  return JSON.parse(localStorage.getItem('cart')) || [];
+}
+
+function saveCart(cart) {
+  localStorage.setItem('cart', JSON.stringify(cart));
+  updateCartCount();
+}
+
+function updateCartCount() {
+  const cart = getCart();
+  const countEl = document.getElementById('cartCount');
+  if (countEl) {
+    countEl.textContent = cart.reduce((total, item) => total + item.qty, 0);
+  }
+}
+
+function addToCart(name, price) {
+  const cart = getCart();
+  const existing = cart.find(item => item.name === name);
+
+  if (existing) {
+    existing.qty += 1; // already in cart - just bump the quantity
+  } else {
+    cart.push({ name, price, qty: 1 }); // new item
+  }
+
+  saveCart(cart);
+}// 1. Product data - array of objects
 const products = [
   { name: "Versace Eros", price: "₦25,000", category: "Body perfumes", img: "assets/versace.png" },
   { name: "Dior Poison Girl", price: "₦30,000", category: "Body perfumes", img: "assets/poison.png" },
@@ -41,6 +70,7 @@ function renderProducts(list) {
         <p><strong>${p.price}</strong></p>
         <p><small>${p.category}</small></p>
         <span class="heart" onclick="toggleWishlist(event)">♡</span>
+        <button class="add-cart-btn" onclick="addToCart('${p.name}', '${p.price}')">Add to Cart</button>
       </div>
     `;
   });
@@ -53,3 +83,4 @@ function toggleWishlist(event) {
 }
 
 renderProducts(products); // show all on load
+updateCartCount();
